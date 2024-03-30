@@ -16,10 +16,10 @@ modified time because it requires no special tooling (exiftool) to set in the fi
 I have owned several cameras and mobiles in the time before I enabled automatic uploads to Google Photos.  Most devices have consistent ways of 
 naming the data files, and many of them incorporate the date in the file name.  Forms encountered include:
 
-IMG_YYYYMMDD_HHMMSS.jpg|
-PXL_YYYYMMDD_HHMMSS.jpg|
-VID_YYYYMMDD_HHMMSS.AVI|
-YYYY-MM-DD_HH.MM.SS.jpg|
+IMG_YYYYMMDD_HHMMSS.jpg::
+PXL_YYYYMMDD_HHMMSS.jpg::
+VID_YYYYMMDD_HHMMSS.AVI::
+YYYY-MM-DD_HH.MM.SS.jpg::
 etc...
 
 and so on.  set_mtime is an attempt to capture all these formats, and apply a touch on the mtime of each file to make the mtime match the time
