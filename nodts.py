@@ -6,16 +6,13 @@ from pathlib import Path
 from argparse import ArgumentParser
 
 
-
 FFMPEG = 'ffmpeg -i "%s" -map 0:v -map 0:a:0 -map 0:a -map 0:s? -c:v copy -c:s copy -c:a copy -c:a:0 ac3 -disposition:a:0 default -disposition:a:1 0 "%s"'
-
 
 
 def check_args():
     parser = ArgumentParser(prog="nodts", description="Remove Dolby DTS from video")
     parser.add_argument("filename")
     return parser
-
 
 
 def main():
