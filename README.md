@@ -30,3 +30,12 @@ whos names it doesn't recognise.  You should then either fix the regexes or remo
 somehow.
 
 
+## nodts.py
+
+My LG TV doesn't play any videos with DTS audio.  This removes the track and replaces it with ac3, renaming the filename appending _ac3 so I 
+know what's what.
+
+`./nodts.py myvideo.avi`
+
+Will write out myvideo_ac3.avi
+
