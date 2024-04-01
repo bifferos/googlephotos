@@ -26,8 +26,14 @@ and so on.  set_mtime is an attempt to capture all these formats, and apply a to
 in the name.
 
 You can use this script to walk a series of directories, find media files and change their modified times.  The script will abort if it finds files
-whos names it doesn't recognise.  You should then either fix the regexes or remove the files from the set of files to upload to Google Photos 
-somehow.
+whos names it doesn't recognise.  You should then either fix the regexes or remove the files from the set of files to upload to Google Photos.
+
+
+## wav_to_mp4.py
+
+Google photos has no support for audio files.  The easiest way to deal with these is to create an mp4 from the audio file.  Just so you have something
+to look at while the audio is playing you can add a screen with the original file name and the parent directory.  wav_to_mp4.py scans a directory 
+for .wav files and when it finds them creates an mp4 using lossless audio (alac codec) that's playable on most players.
 
 
 ## nodts.py
