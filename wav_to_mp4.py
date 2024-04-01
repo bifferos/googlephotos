@@ -21,7 +21,7 @@ def text_to_image(text, fname):
 def main():
     here = Path(".").resolve()
     for wav in here.glob("*.wav"):
-        still = here / ".wav_to_google_temp_image.png"
+        still = here / ".wav_to_mp4_temp_image.png"
         text_to_image(f"{wav.parent}\n{wav.stem}", still)
         output = wav.with_suffix(".mp4")
         os.system(f'ffmpeg -loop 1 -i "{still}" -i {wav} -c:v libx264 -c:a alac -shortest "{output}"')
