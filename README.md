@@ -45,3 +45,11 @@ know what's what.
 
 Will write out myvideo_ac3.avi
 
+
+## photos.py
+
+Attempt to use the API to recover metadata.  This is useless because google don't provide the checksum.
+
+## oauth.py
+
+Code to get the all important refresh_token entry in the credentials file.  When you create a set of API credentials you don't initially get this.
