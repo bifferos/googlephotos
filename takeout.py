@@ -1,5 +1,43 @@
 #!/usr/bin/env python3
 
+"""
+    Generate and download a google takeout in zip form.  Get the largest files possible, e.g. 50GB.
+    Run for each takeout file:
+       ./takeout.py index <takeout file>
+
+    For each file in the takeout archive, a hashed directory structure will be created.  So if the sha2 digest of
+    the file is 0000111122223333444455556666, then index file path will be created as:
+    ~/.google_takeout_checksums/0000/1111/2222/3333/4444/5555/6666
+    This allows very fast lookup of a hash in the index (even faster than a DB).  When you want to check if a local
+    file is in the takeout, simply generate the digest, and test for existence of the equivalent hashed directory path.
+
+    Do this with:
+       ./takeout.py query <media file>
+    To scan a whole directory run:
+       ./takeout.py query <directory>
+
+    Results will be in the form of a shell script which you can execute to delete the duplicates.  The script only
+    generates the script.  You should check some of the entries to make sure they actually are in Google Photos.
+    The name is included as a comment.  Example output of the query command:
+
+    # In Google as: Takeout/Google Photos/Photos from 2007/2007-04-20_19.16.56.jpg
+    # /home/biff/.google_takeout_checksums/94a0/3e7b/0ebb/0e0f/5fdd/e15d/2f78/a150/aa18/f0c4/bf8d/bd92/262d/d49d/8fd2/3216
+    # 94a03e7b0ebb0e0f5fdde15d2f78a150aa18f0c4bf8dbd92262dd49d8fd23216
+    echo "removing file black_easy_disk_M_2GB/A727-65A5/2001 - Dec 07/13_Dec 2007/dscf0782.jpg, already in Google"
+    rm "black_easy_disk_M_2GB/A727-65A5/2001 - Dec 07/13_Dec 2007/dscf0782.jpg"
+
+    On indexing sometimes zip entry checksums don't match.  In this case you may way to try again or do another
+    takeout to correct the problem.  When you are done with the index run:
+
+       ./takeout.py purge
+
+    This will remove all index files, in case you switch to a different Google account, or you delete a lot of
+    photos and want to recreate the index from scratch.
+
+
+"""
+
+
 import shutil
 import sys
 import hashlib
