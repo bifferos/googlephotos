@@ -1,7 +1,17 @@
 #!/usr/bin/env python3
 
+"""
+    WAV files cannot be uploaded to Google photos but with the help of ffmpeg and PIL you can convert them into
+    a video file with an image that shows the name of the WAV.  Such mp4 files don't take up any extra space because
+    the alac codec makes them smaller to offset the extra space used by the video track.  The video track is just a
+    repeating image, so highly compressed as well.
+
+    This script converts all .wav files in the current directory into mp4 files.
+
+"""
+
+
 import os
-import sys
 from pathlib import Path
 from PIL import Image, ImageDraw, ImageFont
 

@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 
 """
-    Generate and download a google takeout in zip form.  Get the largest files possible, e.g. 50GB.
+    To use this script:
+    Generate and download a google takeout in zip form (the default).  Zip has some advantages over tgz in that if
+    one part gets corrupted you don't lose the remainder of the archive.
     Run for each takeout file:
        ./takeout.py index <takeout file>
 
