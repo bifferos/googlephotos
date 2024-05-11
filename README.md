@@ -1,6 +1,14 @@
 # googlephotos
 Scripts for helping with google photos
 
+## takeout.py
+
+Google photos provides no way to know if a given photo has already been
+uploaded.  You can only attempt to upload it again which often happens
+faster if it's already there.  Takeout.py indexes a takeout and allows you
+to quickly lookup whether individual files are present in the takeout (and
+therefore in your google account) or not.
+
 
 ## set_mtime.py
 
