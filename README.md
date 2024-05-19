@@ -36,6 +36,10 @@ in the name.
 You can use this script to walk a series of directories, find media files and change their modified times.  The script will abort if it finds files
 whos names it doesn't recognise.  You should then either fix the regexes or remove the files from the set of files to upload to Google Photos.
 
+## pdf_to_webm.py
+
+Google photos has no support for pdf files.  Converting them to webm can be done with this utility.
+
 
 ## wav_to_mp4.py
 
