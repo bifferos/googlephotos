@@ -14,11 +14,12 @@
 import os
 from pathlib import Path
 from PIL import Image, ImageDraw, ImageFont
+import textwrap
 
 
 def text_to_image(text, fname):
     image = Image.new('RGB', (640, 480), color='black')
-    font_path = "/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf" 
+    font_path = "/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf"
     font = ImageFont.truetype(font_path, size=24)
     text_width, text_height = ImageDraw.Draw(image).textsize(text, font=font)
     text_x = (image.width - text_width) // 2
@@ -32,9 +33,12 @@ def main():
     here = Path(".").resolve()
     for wav in here.glob("*.wav"):
         still = here / ".wav_to_google_temp_image.png"
-        text_to_image(f"{wav.parent}\n{wav.stem}", still)
+        new_path = "\n".join(wav.parts[-5:])
+        text_to_image(new_path, still)
         output = wav.with_suffix(".mp4")
         os.system(f'ffmpeg -loop 1 -i "{still}" -i "{wav}" -c:v libx264 -c:a alac -shortest "{output}"')
+        timestamp = os.stat(wav).st_mtime
+        os.utime(output, (timestamp, timestamp))
 
 
 if __name__ == "__main__":

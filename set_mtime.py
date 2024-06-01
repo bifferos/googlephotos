@@ -13,6 +13,7 @@ DATE_REGEX = [
   re.compile(r"^(?P<year>\d{4})-(?P<month>\d{2})-(?P<day>\d{2})[ _](?P<hour>\d{2})\.(?P<minute>\d{2})\.(?P<second>\d{2})([-_].+)?$"),
   re.compile(r"^(PXL|IMG|VID)_(?P<year>\d{4})(?P<month>\d{2})(?P<day>\d{2})_(?P<hour>\d{2})(?P<minute>\d{2})(?P<second>\d{2})(\d{3})?(\.LS|\.PORTRAIT(\~\d)?|\~\d|\~5)?$"),
   re.compile(r"^(?P<year>\d{4})_(?P<month>\d{2})(?P<day>\d{2})_(?P<hour>\d{2})(?P<minute>\d{2})(?P<second>\d{2})_\d{3}(_c\d{2})?$"),
+  re.compile(r"^(?P<year>\d{4})(?P<month>\d{2})(?P<day>\d{2})[ _](?P<hour>\d{2})(?P<minute>\d{2})(?P<second>\d{2})([-_].+)?$"),
 ]
 
 MEDIA_EXTENSIONS = [".jpg", ".jpeg", ".tif", ".mp4", ".mov", ".avi", ".png"]

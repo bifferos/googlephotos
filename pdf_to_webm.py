@@ -12,11 +12,42 @@
     I don't have many PDF files, so optimising for space is no big deal but this could be reduced.
 """
 
+
 import tempfile
 import shutil
 import os
+import re
 from pathlib import Path
 from subprocess import run
+from datetime import datetime
+from dateutil import parser
+
+
+PDF_INFO_REX = re.compile(r"^([^:]+): +([^ ].*)")
+
+
+def pdf_info_to_dict(info_string):
+    out = {}
+    for line in info_string.split("\n"):
+        text = line.strip()
+        match = PDF_INFO_REX.match(text)
+        if match is None:
+            continue
+        key = match.group(1)
+        value = match.group(2)
+        out[key] = value
+    return out
+
+
+def date_from_pdf_info(info_string):
+    date_string = pdf_info_to_dict(info_string)["CreationDate"]
+    datetime_obj = parser.parse(date_string)
+    ts = datetime_obj.timestamp()
+    return ts
+
+
+def page_count_from_pdf_info(info_string):
+    return int(pdf_info_to_dict(info_string)["Pages"])
 
 
 class PdfConverterContext:
@@ -30,11 +61,25 @@ class PdfConverterContext:
                      capture_output=True, text=True)
         print("OUT:", result.stdout)
         print("ERR:", result.stderr)
+        return result.stdout
 
-    def convert(self, output):
+    def convert(self):
+        pdf_info = self.exec(["pdfinfo", "-isodates", self.pdf_name])
+        pages = page_count_from_pdf_info(pdf_info)
         self.exec(["pdftoppm", "-png", "-r", "300", self.pdf_name, "png"])
-        self.exec(["ffmpeg", "-y", "-framerate", "0.25", "-i", "png-%d.png", "-c:v", "libvpx-vp9",
-                   "-r", "0.25", "-pix_fmt", "yuv420p", output])
+        output = None
+
+        if pages == 1:
+            # Special case a single page, just turn it into a PNG
+            output = self.pdf_name.with_suffix(".png")
+            png_path = Path(self._temp_dir) / "png-1.png"
+            shutil.copy(png_path, output)
+        else:
+            output = self.pdf_name.with_suffix(".webm")
+            self.exec(["ffmpeg", "-y", "-framerate", "0.25", "-i", "png-%d.png", "-c:v", "libvpx-vp9",
+                       "-r", "0.25", "-pix_fmt", "yuv420p", output])
+        timestamp = date_from_pdf_info(pdf_info)
+        os.utime(output, (timestamp, timestamp))
 
     def __enter__(self):
         self._temp_dir = tempfile.mkdtemp(prefix="pdf_to_webm_")
@@ -50,7 +95,7 @@ def main():
     here = Path(".").resolve()
     for pdf in here.glob("*.pdf"):
         with PdfConverterContext(pdf) as converter:
-            converter.convert(pdf.with_suffix(".webm"))
+            converter.convert()
 
 
 if __name__ == "__main__":
